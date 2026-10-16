@@ -187,9 +187,11 @@ const labels = pauseLabels[lang] || pauseLabels.es;
       });
 
       new IntersectionObserver(([entry]) => {
-        visible = entry.isIntersecting && entry.intersectionRatio > 0;
+        visible = entry.isIntersecting;
         schedule();
-      }, { threshold: 0 }).observe(hero);
+      }, {
+        threshold: [0, 0.01],
+      }).observe(hero);
 
       document.addEventListener('visibilitychange', schedule);
 
