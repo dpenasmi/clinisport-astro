@@ -92,10 +92,28 @@ const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelon
     
     </FullScreenSection>
     
-    <FullScreenSection id="equipo" image="/images/EQUIPO.png" alt={t.alts.team} class="slide--team">
+    <FullScreenSection 
+    
+      id="equipo" 
+      image="/images/EQUIPO.png" 
+      images={[
+        '/images/EQUIPO.png',
+        '/images/EQUIPO-2.png',
+        '/images/EQUIPO-3.png',
+      ]}
+      
+      
+      alt={t.alts.team} 
+      class="slide--team">
+      
       <div class="copy"><p class="eyebrow">05 / {t.nav[4]}</p><h2 id="equipo-title">{t.team.map(line => <span>{line}</span>)}</h2><p class="intro">{t.teamText}</p><p class="team-label">{t.teamLabel}</p><a class="button button--outline" href="#contacto">{t.teamCta}<span aria-hidden="true">↗</span></a></div>
+    
     </FullScreenSection>
-    <FullScreenSection id="contacto" image="/images/CONTACTO.png" alt={t.alts.facade} class="slide--contact">
+    
+    <FullScreenSection 
+      
+      id="contacto" 
+      image="/images/CONTACTO.png" alt={t.alts.facade} class="slide--contact">
       <div class="contact-layout"><div class="copy"><p class="eyebrow">06 / {t.nav[5]}</p><h2 id="contacto-title">{t.contact.map(line => <span>{line}</span>)}</h2><p class="intro">{t.contactText}</p><a class="button" href="tel:+34930092283" data-booking>{t.contactCta}<span aria-hidden="true">↗</span></a></div><address class="contact-card"><Brand compact /><p>{t.address}<br />Eixample · Barcelona</p><a href="tel:+34930092283">930 09 22 83 <span aria-hidden="true">↗</span></a><a href={map} target="_blank" rel="noopener noreferrer">{t.directions}<span aria-hidden="true">↗</span></a></address></div>
       <footer class="footer" slot="extra"><span>{t.demo}</span><span>© {new Date().getFullYear()} Clinisport Barcelona</span></footer>
     </FullScreenSection>
