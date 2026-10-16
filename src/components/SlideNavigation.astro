@@ -1,0 +1,14 @@
+---
+import { ids } from '../data/content';
+const { t } = Astro.props;
+---
+<aside class="rail">
+  <nav aria-label={t.navigation}>
+    <button class="rail-arrow" data-direction="-1" aria-label={t.prev} disabled><span aria-hidden="true">⌃</span></button>
+    <ol class="rail-list">
+      {ids.map((id, i) => <li><a href={`#${id}`} data-section-link={id} aria-label={`${String(i+1).padStart(2,'0')} · ${t.nav[i]}`} aria-current={i === 0 ? 'location' : undefined}><span class="rail-dot" aria-hidden="true"></span><span class="rail-number">0{i+1}</span><span class="rail-label">{t.nav[i]}</span></a></li>)}
+    </ol>
+    <button class="rail-arrow" data-direction="1" aria-label={t.next}><span aria-hidden="true">⌄</span></button>
+  </nav>
+  <span class="rail-counter" aria-hidden="true"><span data-current>01</span> / 06</span>
+</aside>

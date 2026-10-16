@@ -1,0 +1,25 @@
+---
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/600.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '../styles/global.css';
+const { t, lang } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#061F1A" />
+    <meta name="description" content={t.description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{t.title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body data-slide-word={t.slide} data-of-word={t.of}>
+    <a class="skip-link" href="#inicio">{t.skip}</a>
+    <slot />
+    <script>import '../scripts/navigation.js';</script>
+  </body>
+</html>

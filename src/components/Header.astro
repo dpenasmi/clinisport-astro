@@ -1,0 +1,97 @@
+---
+import Brand from './Brand.astro';
+import { ids, languages } from '../data/content';
+
+const { t, lang } = Astro.props;
+
+const languageNames: Record<string, string> = {
+  es: 'Castellano',
+  ca: 'Català',
+  en: 'English',
+};
+---
+
+<header class="header">
+  <a
+    class="brand-link"
+    href="#inicio"
+    aria-label="Clinisport Barcelona"
+  >
+    <Brand />
+  </a>
+
+  <nav class="desktop-nav" aria-label={t.navigation}>
+    {
+      ids.map((id, i) => (
+        <a
+          href={`#${id}`}
+          data-section-link={id}
+          aria-current={i === 0 ? 'location' : undefined}
+        >
+          {t.nav[i]}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="header-actions">
+    <nav class="languages" aria-label={t.language}>
+      {
+        languages.map((code) => (
+          <a
+            href={`/${code}/#inicio`}
+            data-language={code}
+            lang={code}
+            aria-label={languageNames[code]}
+            aria-current={lang === code ? 'page' : undefined}
+          >
+            {code.toUpperCase()}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      class="button button--small header-booking"
+      href="tel:+34930092283"
+      data-booking
+    >
+      {t.reserve}
+      <span aria-hidden="true">↗</span>
+    </a>
+
+    <button
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span>{t.menu}</span>
+      <span class="menu-glyph" aria-hidden="true">☰</span>
+    </button>
+  </div>
+</header>
+
+<nav
+  class="mobile-menu"
+  id="mobile-menu"
+  aria-label={t.navigation}
+  hidden
+>
+  {
+    ids.map((id, i) => (
+      <a href={`#${id}`} data-section-link={id}>
+        <span>0{i + 1}</span>
+        {t.nav[i]}
+      </a>
+    ))
+  }
+
+  <a
+    class="button"
+    href="tel:+34930092283"
+    data-booking
+  >
+    {t.reserve}
+    <span aria-hidden="true">↗</span>
+  </a>
+</nav>

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import SlideNavigation from '../../components/SlideNavigation.astro';
+import FullScreenSection from '../../components/FullScreenSection.astro';
+import Brand from '../../components/Brand.astro';
+import { content, languages } from '../../data/content';
+export function getStaticPaths() {
+  return languages.map(lang => ({ params: { lang }, props: { lang } }));
+}
+const lang = (Astro.props.lang || Astro.params.lang || 'es') as keyof typeof content;
+const t = content[lang];
+const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelona+Par%C3%ADs+138';
+---
+<BaseLayout t={t} lang={lang}>
+  <Header t={t} lang={lang} />
+  <SlideNavigation t={t} />
+  <main id="slides">
+    <FullScreenSection id="inicio" image="/images/HERO.png"
+    
+          images={[
+            '/images/HERO.png',
+            '/images/hero-ball.png',
+            '/images/hero-banco.png',
+            '/images/hero-ecografia-tendon.png',
+            '/images/hero-mancuerna.png',
+            '/images/hero-pesa.png',
+            '/images/hero-pesa-equilibrio.png',
+            '/images/hero-kettlebell.png',
+            '/images/hero-fisio-rodilla.png',
+          ]}
+    
+        alt="" class="slide--hero" priority>
+      <div class="copy hero-copy">
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1 id="inicio-title">{t.hero.map(line => <span>{line}</span>)}</h1>
+        <p class="intro">{t.heroText}</p>
+        <div class="actions"><a class="button" href="tel:+34930092283" data-booking>{t.reserve}<span aria-hidden="true">↗</span></a><a class="button button--outline" href="#enfoque">{t.discover}<span aria-hidden="true">↗</span></a></div>
+      </div>
+      
+      <div class="slide-bottom" slot="extra"><span class="location">⌖ &nbsp; {t.local}</span><a href="#enfoque" class="scroll-cue"><span class="mouse" aria-hidden="true"></span>{t.scroll}</a><span class="slide-index">01 — 06</span></div>
+    </FullScreenSection>
+    <FullScreenSection id="enfoque" image="/images/ENFOQUE.png" alt={t.alts.consultation} side="right">
+      <div class="copy"><p class="eyebrow">02 / {t.nav[1]}</p><h2 id="enfoque-title">{t.approach.map(line => <span>{line}</span>)}</h2><p class="intro">{t.approachText}</p><ol class="steps">{t.steps.map((step,i) => <li><span>0{i+1}</span>{step}</li>)}</ol><a class="button" href="#contacto">{t.approachCta}<span aria-hidden="true">↗</span></a></div>
+    </FullScreenSection>
+    <FullScreenSection id="fisioterapia" image="/images/SALA-FISIOTERAPIA.png" alt={t.alts.physio}>
+      <div class="copy"><p class="eyebrow">03 / {t.nav[2]}</p><h2 id="fisioterapia-title">{t.physio.map(line => <span>{line}</span>)}</h2><p class="intro">{t.physioText}</p><ul class="services">{t.services.map(service => <li>{service}</li>)}</ul><a class="button" href="#contacto">{t.physioCta}<span aria-hidden="true">↗</span></a></div>
+    </FullScreenSection>
+    <FullScreenSection id="rendimiento" image="/images/RENDIMIENTO.png" alt={t.alts.performance} side="right">
+      <div class="copy"><p class="eyebrow">04 / {t.nav[3]}</p><h2 id="rendimiento-title">{t.performance.map(line => <span>{line}</span>)}</h2><p class="intro">{t.performanceText}</p><div class="pillars">{t.pillars.map(([title,text]) => <div><h3>{title}</h3><p>{text}</p></div>)}</div><a class="button" href="#contacto">{t.performanceCta}<span aria-hidden="true">↗</span></a></div>
+    </FullScreenSection>
+    <FullScreenSection id="equipo" image="/images/EQUIPO.png" alt={t.alts.team} class="slide--team">
+      <div class="copy"><p class="eyebrow">05 / {t.nav[4]}</p><h2 id="equipo-title">{t.team.map(line => <span>{line}</span>)}</h2><p class="intro">{t.teamText}</p><p class="team-label">{t.teamLabel}</p><a class="button button--outline" href="#contacto">{t.teamCta}<span aria-hidden="true">↗</span></a></div>
+    </FullScreenSection>
+    <FullScreenSection id="contacto" image="/images/CONTACTO.png" alt={t.alts.facade} class="slide--contact">
+      <div class="contact-layout"><div class="copy"><p class="eyebrow">06 / {t.nav[5]}</p><h2 id="contacto-title">{t.contact.map(line => <span>{line}</span>)}</h2><p class="intro">{t.contactText}</p><a class="button" href="tel:+34930092283" data-booking>{t.contactCta}<span aria-hidden="true">↗</span></a></div><address class="contact-card"><Brand compact /><p>{t.address}<br />Eixample · Barcelona</p><a href="tel:+34930092283">930 09 22 83 <span aria-hidden="true">↗</span></a><a href={map} target="_blank" rel="noopener noreferrer">{t.directions}<span aria-hidden="true">↗</span></a></address></div>
+      <footer class="footer" slot="extra"><span>{t.demo}</span><span>© {new Date().getFullYear()} Clinisport Barcelona</span></footer>
+    </FullScreenSection>
+  </main>
+  <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-announcement></p>
+  <dialog class="booking-dialog" aria-labelledby="booking-title">
+    <form method="dialog"><button class="dialog-close" aria-label={t.close}>×</button></form>
+    <p class="eyebrow">Clinisport Barcelona</p><h2 id="booking-title">{t.bookingTitle}</h2><p>{t.bookingText}</p><a class="button" href="tel:+34930092283">{t.call} <span aria-hidden="true">↗</span></a><a class="dialog-phone" href="tel:+34930092283">930 09 22 83</a><small>{t.bookingNote}</small>
+  </dialog>
+</BaseLayout>

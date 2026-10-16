@@ -1,0 +1,195 @@
+---
+const {
+  id,
+  image,
+  images = [],
+  alt,
+  side = 'left',
+  class: className = '',
+  priority = false,
+} = Astro.props;
+
+const backgrounds: string[] = Array.from(new Set(
+  (images.length ? images : [image]).filter(
+    (src: unknown): src is string => typeof src === 'string' && src.trim().length > 0
+  )
+));
+const carousel = backgrounds.length > 1;
+
+const pauseLabels = {
+  es: ['Pausar imágenes', 'Reanudar imágenes'],
+  ca: ['Pausa les imatges', 'Reprèn les imatges'],
+  en: ['Pause images', 'Resume images'],
+};
+
+const lang = (Astro.params.lang || 'es') as keyof typeof pauseLabels;
+const labels = pauseLabels[lang] || pauseLabels.es;
+---
+
+<section
+  id={id}
+  class:list={['slide', `slide--${side}`, className]}
+  aria-labelledby={`${id}-title`}
+  tabindex="-1"
+  data-hero-carousel={carousel ? '' : undefined}
+>
+  {
+    backgrounds.map((src, index) => (
+      <img
+        class:list={[
+          'slide-background',
+          {
+            'carousel-image': carousel,
+            'is-active': index === 0,
+          },
+        ]}
+        src={src}
+        alt={index === 0 ? alt : ''}
+        aria-hidden={index > 0 ? 'true' : undefined}
+        loading={carousel || priority || index === 0 ? 'eager' : 'lazy'}
+        fetchpriority={priority && index === 0 ? 'high' : 'auto'}
+        decoding="async"
+      />
+    ))
+  }
+
+  <div class="slide-shade" aria-hidden="true"></div>
+
+  <div class="slide-inner">
+    <slot />
+  </div>
+
+  <slot name="extra" />
+
+  {
+    carousel && (
+      <button
+        class="hero-carousel-toggle"
+        type="button"
+        data-carousel-toggle
+        data-pause-label={labels[0]}
+        data-resume-label={labels[1]}
+        aria-label={labels[0]}
+        hidden
+      >
+        <span data-carousel-icon aria-hidden="true">Ⅱ</span>
+      </button>
+    )
+  }
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-hero-carousel]')
+    .forEach((hero) => {
+      const images = Array.from(
+        hero.querySelectorAll<HTMLImageElement>('.carousel-image')
+      );
+
+      const button = hero.querySelector<HTMLButtonElement>(
+        '[data-carousel-toggle]'
+      );
+
+      const icon = button?.querySelector('[data-carousel-icon]');
+      const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (images.length < 2 || !button) return;
+
+      let current = 0;
+      let paused = motion.matches;
+      const rect = hero.getBoundingClientRect();
+      let visible = rect.bottom > 0 && rect.top < window.innerHeight;
+      const failed = new Set<number>();
+      let changing = false;
+      let timer: ReturnType<typeof setTimeout> | undefined;
+
+      const stop = () => {
+        clearTimeout(timer);
+        timer = undefined;
+      };
+
+      const updateButton = () => {
+        button.setAttribute(
+          'aria-label',
+          (paused
+            ? button.dataset.resumeLabel
+            : button.dataset.pauseLabel) || ''
+        );
+
+        if (icon) icon.textContent = paused ? '▶' : 'Ⅱ';
+      };
+
+      const schedule = () => {
+        stop();
+
+        if (paused || !visible || document.hidden || changing) return;
+
+        timer = setTimeout(changeImage, 6000);
+      };
+
+      const changeImage = async () => {
+        changing = true;
+
+        try {
+          // Busca la siguiente imagen válida sin quedarse bloqueado en una ruta rota.
+          for (let offset = 1; offset < images.length; offset++) {
+            const next = (current + offset) % images.length;
+            if (failed.has(next)) continue;
+
+            let timeout: ReturnType<typeof setTimeout> | undefined;
+            try {
+              await Promise.race([
+                images[next].decode(),
+                new Promise<never>((_, reject) => {
+                  timeout = setTimeout(() => reject(new Error('timeout')), 10000);
+                }),
+              ]);
+            } catch (error) {
+              // Una descarga lenta se reintenta; una imagen rota se omite.
+              if (images[next].complete && images[next].naturalWidth === 0) {
+                failed.add(next);
+              }
+              console.warn('[Clinisport] No se pudo cargar:', images[next].src, error);
+              continue;
+            } finally {
+              clearTimeout(timeout);
+            }
+
+            if (paused || !visible || document.hidden) return;
+
+            images[current].classList.remove('is-active');
+            images[current].setAttribute('aria-hidden', 'true');
+            images[next].classList.add('is-active');
+            images[next].removeAttribute('aria-hidden');
+            current = next;
+            return;
+          }
+        } finally {
+          changing = false;
+          schedule();
+        }
+      };
+
+      button.hidden = false;
+      updateButton();
+      schedule();
+
+      button.addEventListener('click', () => {
+        paused = !paused;
+        updateButton();
+        schedule();
+      });
+
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting && entry.intersectionRatio > 0;
+        schedule();
+      }, { threshold: 0 }).observe(hero);
+
+      document.addEventListener('visibilitychange', schedule);
+
+      motion.addEventListener('change', (event) => {
+        paused = event.matches;
+        updateButton();
+        schedule();
+      });
+    });
+</script>

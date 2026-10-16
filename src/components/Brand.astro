@@ -1,0 +1,26 @@
+---
+const { compact = false } = Astro.props;
+---
+
+<span class:list={['brand', { 'brand--compact': compact }]}>
+  <img
+    class="brand-mark"
+    src="/images/escudo-clinisport.png"
+    alt=""
+    width="38"
+    height="52"
+  />
+
+  <span class="brand-type">
+    <strong>CLINISPORT</strong>
+    <span>BARCELONA</span>
+  </span>
+</span>
+
+<style>
+  img.brand-mark {
+    display: block;
+    object-fit: contain;
+    filter: none;
+  }
+</style>

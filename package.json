@@ -1,0 +1,9 @@
+{
+  "name": "clinisport-barcelona-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "astro dev", "build": "astro build", "preview": "astro preview" },
+  "dependencies": { "astro": "7.3.8", "@fontsource/manrope": "^5.2.0", "@fontsource/inter": "^5.2.0" },
+  "engines": { "node": ">=22.12.0" }
+}
