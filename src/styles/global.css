@@ -1227,7 +1227,7 @@ a,button {
 }
 
 /* HERO · Carrusel de fondos */
-.slide--hero .carousel-image {
+.slide .carousel-image {
   opacity: 0;
   transition: opacity 1200ms ease-in-out;
   pointer-events: none;
