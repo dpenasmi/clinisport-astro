@@ -16,6 +16,13 @@ const backgrounds: string[] = Array.from(new Set(
 ));
 const carousel = backgrounds.length > 1;
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const imageUrl = (src: string) =>
+  src.startsWith('/') && !src.startsWith('//')
+    ? `${base}${src}`
+    : src;
+
 const pauseLabels = {
   es: ['Pausar imágenes', 'Reanudar imágenes'],
   ca: ['Pausa les imatges', 'Reprèn les imatges'],
@@ -43,7 +50,7 @@ const labels = pauseLabels[lang] || pauseLabels.es;
             'is-active': index === 0,
           },
         ]}
-        src={src}
+        src={imageUrl(src)}
         alt={index === 0 ? alt : ''}
         aria-hidden={index > 0 ? 'true' : undefined}
         loading={carousel || priority || index === 0 ? 'eager' : 'lazy'}

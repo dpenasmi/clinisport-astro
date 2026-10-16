@@ -4,6 +4,8 @@ import { ids, languages } from '../data/content';
 
 const { t, lang } = Astro.props;
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const languageNames: Record<string, string> = {
   es: 'Castellano',
   ca: 'Català',
@@ -39,7 +41,7 @@ const languageNames: Record<string, string> = {
       {
         languages.map((code) => (
           <a
-            href={`/${code}/#inicio`}
+            href={`${base}/${code}/#inicio`}
             data-language={code}
             lang={code}
             aria-label={languageNames[code]}

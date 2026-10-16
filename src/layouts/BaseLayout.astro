@@ -5,6 +5,7 @@ import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '../styles/global.css';
 const { t, lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!doctype html>
 <html lang={lang}>
@@ -15,7 +16,7 @@ const { t, lang } = Astro.props;
     <meta name="description" content={t.description} />
     <meta name="robots" content="noindex, nofollow" />
     <title>{t.title}</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
   </head>
   <body data-slide-word={t.slide} data-of-word={t.of}>
     <a class="skip-link" href="#inicio">{t.skip}</a>
