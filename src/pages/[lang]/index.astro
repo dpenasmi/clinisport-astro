@@ -62,11 +62,11 @@ const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelon
     <FullScreenSection 
       
       id="fisioterapia" 
-      image="/images/SALA-FISIOTERAPIA.png" 
+      image="/images/SALA-FISIOTERAPIA.webp" 
       images={[
-        '/images/SALA-FISIOTERAPIA.png',
-        '/images/FISIO-1.png',
-        '/images/FISIO-2.png',
+        '/images/SALA-FISIOTERAPIA.webp',
+        '/images/FISIO-1.webp',
+        '/images/FISIO-2.webp',
       ]}
       
       alt={t.alts.physio}>
@@ -78,11 +78,11 @@ const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelon
     <FullScreenSection 
     
       id="rendimiento" 
-      image="/images/RENDIMIENTO.png" 
+      image="/images/RENDIMIENTO.webp" 
       images={[
-        '/images/RENDIMIENTO.png',
-        '/images/RENDIMIENTO-2.png',
-        '/images/RENDIMIENTO-3.png',
+        '/images/RENDIMIENTO.webp',
+        '/images/RENDIMIENTO-2.webp',
+        '/images/RENDIMIENTO-3.webp',
       ]}
       
       
@@ -95,11 +95,11 @@ const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelon
     <FullScreenSection 
     
       id="equipo" 
-      image="/images/EQUIPO.png" 
+      image="/images/EQUIPO.webp" 
       images={[
-        '/images/EQUIPO.png',
-        '/images/EQUIPO-2.png',
-        '/images/EQUIPO-3.png',
+        '/images/EQUIPO.webp',
+        '/images/EQUIPO-2.webp',
+        '/images/EQUIPO-3.webp',
       ]}
       
       
@@ -113,11 +113,18 @@ const map = 'https://www.google.com/maps/search/?api=1&query=Clinisport+Barcelon
     <FullScreenSection 
       
       id="contacto" 
-      image="/images/CONTACTO.png" alt={t.alts.facade} class="slide--contact">
+      image="/images/CONTACTO.webp" 
+      alt={t.alts.facade} 
+      class="slide--contact">
+      
       <div class="contact-layout"><div class="copy"><p class="eyebrow">06 / {t.nav[5]}</p><h2 id="contacto-title">{t.contact.map(line => <span>{line}</span>)}</h2><p class="intro">{t.contactText}</p><a class="button" href="tel:+34930092283" data-booking>{t.contactCta}<span aria-hidden="true">↗</span></a></div><address class="contact-card"><Brand compact /><p>{t.address}<br />Eixample · Barcelona</p><a href="tel:+34930092283">930 09 22 83 <span aria-hidden="true">↗</span></a><a href={map} target="_blank" rel="noopener noreferrer">{t.directions}<span aria-hidden="true">↗</span></a></address></div>
+      
       <footer class="footer" slot="extra"><span>{t.demo}</span><span>© {new Date().getFullYear()} Clinisport Barcelona</span></footer>
+    
     </FullScreenSection>
+  
   </main>
+  
   <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-announcement></p>
   <dialog class="booking-dialog" aria-labelledby="booking-title">
     <form method="dialog"><button class="dialog-close" aria-label={t.close}>×</button></form>
